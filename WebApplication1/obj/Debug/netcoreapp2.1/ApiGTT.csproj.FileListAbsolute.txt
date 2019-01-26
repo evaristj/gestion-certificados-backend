@@ -1,0 +1,14 @@
+C:\Users\Evarist\source\repos\WebApplication1\WebApplication1\bin\Debug\netcoreapp2.1\ApiGTT.deps.json
+C:\Users\Evarist\source\repos\WebApplication1\WebApplication1\bin\Debug\netcoreapp2.1\ApiGTT.runtimeconfig.json
+C:\Users\Evarist\source\repos\WebApplication1\WebApplication1\bin\Debug\netcoreapp2.1\ApiGTT.runtimeconfig.dev.json
+C:\Users\Evarist\source\repos\WebApplication1\WebApplication1\bin\Debug\netcoreapp2.1\ApiGTT.dll
+C:\Users\Evarist\source\repos\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\ApiGTT.csprojAssemblyReference.cache
+C:\Users\Evarist\source\repos\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\ApiGTT.csproj.CoreCompileInputs.cache
+C:\Users\Evarist\source\repos\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\ApiGTT.RazorAssemblyInfo.cache
+C:\Users\Evarist\source\repos\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\ApiGTT.RazorAssemblyInfo.cs
+C:\Users\Evarist\source\repos\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\ApiGTT.AssemblyInfoInputs.cache
+C:\Users\Evarist\source\repos\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\ApiGTT.AssemblyInfo.cs
+C:\Users\Evarist\source\repos\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\ApiGTT.RazorTargetAssemblyInfo.cache
+C:\Users\Evarist\source\repos\WebApplication1\WebApplication1\bin\Debug\netcoreapp2.1\ApiGTT.pdb
+C:\Users\Evarist\source\repos\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\ApiGTT.dll
+C:\Users\Evarist\source\repos\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\ApiGTT.pdb
