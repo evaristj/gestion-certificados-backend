@@ -54,7 +54,7 @@ namespace ApiGTT.Controllers
                 Console.WriteLine("Error  => " + ex.Message);
                 return NotFound();
             }
-            Console.WriteLine("no encuentra usuario ******************************");
+            Console.WriteLine("usuario o contraseña incorrectas ***********************");
 
             return Unauthorized();
             

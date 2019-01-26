@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ApiGTT.Models;
+using ApiGTT.Helpers;
 
 namespace ApiGTT.Controllers
 {
@@ -39,27 +40,64 @@ namespace ApiGTT.Controllers
 
         // GET: api/Jira/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public ActionResult<Jira> Get(long id)
         {
-            return "value";
+            Jira jira = _context.Jira.Find();
+            if (jira == null)
+            {
+                return NotFound();
+            }
+            return jira;
         }
 
         // POST: api/Jira
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<Jira> Post([FromBody] Jira value)
         {
+            Jira nameRepeat = _context.Jira.Where(
+                jira => jira.username == value.username).FirstOrDefault();
+
+            if (nameRepeat == null)
+            {
+                value.password = Encrypt.Hash(value.password);
+                this._context.Jira.Add(value);
+                this._context.SaveChanges();
+
+                return value;
+            }
+
+            return Unauthorized();
+
         }
 
         // PUT: api/Jira/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(long id, [FromBody] Jira value)
         {
+            Jira jira = this._context.Jira.Find(id);
+            jira.username = value.username;
+            jira.password = Encrypt.Hash(value.password);
+            this._context.SaveChanges();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<string> Delete(long id)
         {
+            Jira jiraUserDelete = this._context.Jira.Where(
+                jira => jira.id == id).FirstOrDefault();
+            if (jiraUserDelete == null)
+            {
+                return "usuario no existe";
+            }
+
+            // _context es el contexto de la entidad, de la aplicacion, para nosotros poder acceder
+            // al contexto de la DB en este caso, se pueden añadir más contextos en su respectiva clase
+            // se inyecta, NO se importa
+            this._context.Remove(jiraUserDelete);
+            this._context.SaveChanges();
+
+            return "Se ha borrado: " + jiraUserDelete.id;
         }
     }
 }
