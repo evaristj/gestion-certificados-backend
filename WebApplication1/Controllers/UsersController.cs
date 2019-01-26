@@ -29,6 +29,14 @@ namespace ApiGTT.Controllers
                 this._context.Users.Add(usuario);
                 this._context.SaveChanges();
             }
+            /*
+            Users usuario2 = new Users();
+            usuario2.username = "pepepa";
+            usuario2.password = Encrypt.Hash("123123");
+
+            this._context.Users.Add(usuario2);
+            this._context.SaveChanges();
+            */
         }
 
         // GET: api/users
@@ -38,7 +46,7 @@ namespace ApiGTT.Controllers
             return this._context.Users.ToList();
         }
 
-        // GET: api/users/5
+        // GET: api/users/5 encontrar user por id
         [HttpGet("{id}")]
         public ActionResult<Users> Get(long id)
         {
@@ -50,23 +58,33 @@ namespace ApiGTT.Controllers
             return user;
         }
 
-        // POST: api/Users
+        // POST: api/Users crear usuarios
         [HttpPost]
         public ActionResult<Users> Post([FromBody] Users value)
         {
-            this._context.Users.Add(value);
-            this._context.SaveChanges();
+            Users nameRepeat = _context.Users.Where(
+                user => user.username == value.username).FirstOrDefault();
+           
+            if(nameRepeat == null)
+            {
+                value.password = Encrypt.Hash(value.password);
+                this._context.Users.Add(value);
+                this._context.SaveChanges();
 
-            return value;
+                return value;
+            }
+
+                return Unauthorized();
+
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Users/5 modificar usuario
         [HttpPut("{id}")]
         public void Put(long id, [FromBody] Users value)
         {
             Users user = this._context.Users.Find(id);
             user.username = value.username;
-            user.password = value.password;
+            user.password = Encrypt.Hash(value.password);
             this._context.SaveChanges();
 
         }
@@ -76,8 +94,8 @@ namespace ApiGTT.Controllers
         public ActionResult<string> Delete(long id)
         {
             Users userDelete = this._context.Users.Where(
-                user => user.username == "Evarist").First();
-            if (userDelete.username == null)
+                user => user.id == id).FirstOrDefault();
+            if (userDelete == null)
             {
                 return "usuario no existe";
             }

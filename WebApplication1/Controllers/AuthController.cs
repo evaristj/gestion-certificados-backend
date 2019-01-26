@@ -40,14 +40,13 @@ namespace ApiGTT.Controllers
         public ActionResult Post([FromBody] Users value)
         {
             try {
-                Users userLogin = this._context.Users.Where(
+                Users userNameLogin = this._context.Users.Where(
                 user => user.username == value.username).First();
                 Console.WriteLine(value.username + "***************");
-                if (userLogin.password == Encrypt.Hash(value.password))
+                if (userNameLogin.password == Encrypt.Hash(value.password) && userNameLogin.username == value.username)
                 {
-                    return Ok("Usuario encontrado: " + userLogin);
+                    return Ok("Usuario válido: " + userNameLogin);
                 }
-                Console.WriteLine();
 
             }
             catch (Exception ex)
@@ -55,7 +54,7 @@ namespace ApiGTT.Controllers
                 Console.WriteLine("Error  => " + ex.Message);
                 return NotFound();
             }
-            Console.WriteLine("no entra en el error ************");
+            Console.WriteLine("no encuentra usuario ******************************");
 
             return Unauthorized();
             
