@@ -23,9 +23,29 @@ namespace ApiGTT.Migrations
                     b.Property<long>("id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("alias");
+
+                    b.Property<string>("caducidad");
+
+                    b.Property<string>("contacto_renovacion");
+
+                    b.Property<string>("entidad_emisora");
+
+                    b.Property<string>("id_orga");
+
+                    b.Property<string>("integration_list");
+
+                    b.Property<string>("nombre_cliente");
+
+                    b.Property<string>("num_serie");
+
+                    b.Property<string>("observaciones");
+
                     b.Property<string>("password");
 
-                    b.Property<string>("username");
+                    b.Property<string>("repositorio_url");
+
+                    b.Property<string>("subject");
 
                     b.HasKey("id");
 
@@ -37,7 +57,13 @@ namespace ApiGTT.Migrations
                     b.Property<long>("id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("component");
+
                     b.Property<string>("password");
+
+                    b.Property<string>("project");
+
+                    b.Property<string>("url");
 
                     b.Property<string>("username");
 
@@ -54,6 +80,8 @@ namespace ApiGTT.Migrations
                     b.Property<string>("email");
 
                     b.Property<string>("password");
+
+                    b.Property<string>("role");
 
                     b.Property<string>("username");
 
