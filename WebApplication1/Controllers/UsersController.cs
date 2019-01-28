@@ -24,6 +24,7 @@ namespace ApiGTT.Controllers
                 Users usuario = new Users();
                 usuario.username = "Evarist";
                 usuario.password = Encrypt.Hash("12345");
+                usuario.role = Role.admin;
                 // usuario.password = "12345";
 
                 this._context.Users.Add(usuario);
@@ -85,6 +86,7 @@ namespace ApiGTT.Controllers
             Users user = this._context.Users.Find(id);
             user.username = value.username;
             user.password = Encrypt.Hash(value.password);
+            user.role = value.role;
             this._context.SaveChanges();
 
         }
