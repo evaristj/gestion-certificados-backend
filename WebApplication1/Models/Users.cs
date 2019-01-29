@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ApiGTT.Models
 {
-    public enum Role { admin, user }
+    public enum Role { user, admin }
 
     public class Users
     {

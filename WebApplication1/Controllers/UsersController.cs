@@ -24,8 +24,7 @@ namespace ApiGTT.Controllers
                 Users usuario = new Users();
                 usuario.username = "Evarist";
                 usuario.password = Encrypt.Hash("12345");
-                usuario.role = Role.admin;
-                // usuario.password = "12345";
+                // usuario.role = Role.admin;
 
                 this._context.Users.Add(usuario);
                 this._context.SaveChanges();
@@ -75,7 +74,7 @@ namespace ApiGTT.Controllers
                 return value;
             }
 
-                return Unauthorized();
+            return StatusCode(409);
 
         }
 
