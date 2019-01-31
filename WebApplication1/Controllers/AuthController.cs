@@ -45,7 +45,7 @@ namespace ApiGTT.Controllers
                 Console.WriteLine(value.username + "***************");
                 if (userNameLogin.password == Encrypt.Hash(value.password) && userNameLogin.username == value.username)
                 {
-                    return Ok("Usuario válido: " + userNameLogin);
+                    return Ok(userNameLogin);
                 }
 
             }
