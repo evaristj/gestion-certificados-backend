@@ -62,17 +62,19 @@ namespace ApiGTT.Controllers
         [HttpPost]
         public ActionResult<Users> Post([FromBody] Users value)
         {
-            if(value.username.Trim().Length < 4)
+            if(value.username.Trim().Length < 4 || value.password.Trim().Length < 4 
+                || value.password.Trim() == null || value.username.Trim() == null)
             {
                 return StatusCode(411);
             }
 
             Users nameRepeat = _context.Users.Where(
-                user => user.username == value.username).FirstOrDefault();
+                user => user.username.Trim() == value.username.Trim()).FirstOrDefault();
            
             if(nameRepeat == null)
             {
-                value.password = Encrypt.Hash(value.password);
+                value.username = value.username.Trim();
+                value.password = Encrypt.Hash(value.password.Trim());
                 this._context.Users.Add(value);
                 this._context.SaveChanges();
 
