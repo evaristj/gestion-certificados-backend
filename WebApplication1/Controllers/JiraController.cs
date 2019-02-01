@@ -24,7 +24,7 @@ namespace ApiGTT.Controllers
                 Console.WriteLine("No existen usuarios de jira.");
                 Jira jiraUser = new Jira();
                 jiraUser.username = "pakita";
-                jiraUser.password = "12345";
+                jiraUser.password = Encrypt.Hash("12345");
 
                 this._context.Jira.Add(jiraUser);
                 this._context.SaveChanges();
@@ -54,6 +54,11 @@ namespace ApiGTT.Controllers
         [HttpPost]
         public ActionResult<Jira> Post([FromBody] Jira value)
         {
+            if (value.username.Trim().Length < 4)
+            {
+                return StatusCode(411);
+            }
+
             Jira nameRepeat = _context.Jira.Where(
                 jira => jira.username == value.username).FirstOrDefault();
 

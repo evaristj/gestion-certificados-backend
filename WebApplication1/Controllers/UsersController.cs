@@ -62,6 +62,11 @@ namespace ApiGTT.Controllers
         [HttpPost]
         public ActionResult<Users> Post([FromBody] Users value)
         {
+            if(value.username.Trim().Length < 4)
+            {
+                return StatusCode(411);
+            }
+
             Users nameRepeat = _context.Users.Where(
                 user => user.username == value.username).FirstOrDefault();
            

@@ -39,10 +39,16 @@ namespace ApiGTT.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] Users value)
         {
+            if (value.username.Trim().Length < 4)
+            {
+                return StatusCode(411);
+            }
+
             try {
                 Users userNameLogin = this._context.Users.Where(
                 user => user.username == value.username).First();
                 Console.WriteLine(value.username + "***************");
+
                 if (userNameLogin.password == Encrypt.Hash(value.password) && userNameLogin.username == value.username)
                 {
                     return Ok(userNameLogin);
