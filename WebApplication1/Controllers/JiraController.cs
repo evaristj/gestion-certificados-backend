@@ -54,17 +54,19 @@ namespace ApiGTT.Controllers
         [HttpPost]
         public ActionResult<Jira> Post([FromBody] Jira value)
         {
-            if (value.username.Trim().Length < 4)
+            if (value.username.Trim().Length < 4 || value.password.Trim().Length < 4
+                || value.password.Trim() == null || value.username.Trim() == null)
             {
                 return StatusCode(411);
             }
 
             Jira nameRepeat = _context.Jira.Where(
-                jira => jira.username == value.username).FirstOrDefault();
+                jira => jira.username.Trim() == value.username.Trim()).FirstOrDefault();
 
             if (nameRepeat == null)
             {
-                value.password = Encrypt.Hash(value.password);
+                value.username = value.username.Trim();
+                value.password = Encrypt.Hash(value.password.Trim());
                 this._context.Jira.Add(value);
                 this._context.SaveChanges();
 
