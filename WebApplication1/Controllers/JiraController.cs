@@ -50,7 +50,7 @@ namespace ApiGTT.Controllers
             return jira;
         }
 
-        // POST: api/Jira
+        // POST: api/Jira - crear usuario jira
         [HttpPost]
         public ActionResult<Jira> Post([FromBody] Jira value)
         {
@@ -65,6 +65,7 @@ namespace ApiGTT.Controllers
 
             if (nameRepeat == null)
             {
+                value.id = value.user_id;
                 value.username = value.username.Trim();
                 value.password = Encrypt.Hash(value.password.Trim());
                 this._context.Jira.Add(value);
@@ -82,8 +83,11 @@ namespace ApiGTT.Controllers
         public void Put(long id, [FromBody] Jira value)
         {
             Jira jira = this._context.Jira.Find(id);
-            jira.username = value.username;
-            jira.password = Encrypt.Hash(value.password);
+            jira.username = value.username.Trim();
+            jira.password = Encrypt.Hash(value.password.Trim());
+            jira.url = value.url.Trim();
+            jira.project = value.project.Trim();
+            jira.component = value.component.Trim();
             this._context.SaveChanges();
         }
 

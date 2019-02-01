@@ -8,7 +8,7 @@ namespace ApiGTT.Models
     public class Certificates
     {
         public long id { get; set; }
-        public Users user_id { get; set; }
+        public long user_id { get; set; }
         public string alias { get; set; }
         public string entidad_emisora { get; set; }
         public string num_serie { get; set; }

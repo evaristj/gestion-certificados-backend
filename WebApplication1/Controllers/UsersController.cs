@@ -78,6 +78,15 @@ namespace ApiGTT.Controllers
                 this._context.Users.Add(value);
                 this._context.SaveChanges();
 
+                /*
+                // duplicar este usuario en jira
+                Jira jiraUser = new Jira();
+                jiraUser.username = value.username;
+                jiraUser.password = value.password;
+                jiraUser.user_id = value.id;
+                jiraUser.id = jiraUser.user_id;
+                */
+
                 return value;
             }
 
