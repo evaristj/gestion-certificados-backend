@@ -18,6 +18,7 @@ namespace ApiGTT.Controllers
         public UsersController(AppDbContext context)
         {
             this._context = context;
+            /*
             if (this._context.Users.Count() == 0)
             {
                 Console.WriteLine("No existen usuarios.");
@@ -29,6 +30,7 @@ namespace ApiGTT.Controllers
                 this._context.Users.Add(usuario);
                 this._context.SaveChanges();
             }
+            */
             /*
             Users usuario2 = new Users();
             usuario2.username = "pepepa";
@@ -77,15 +79,6 @@ namespace ApiGTT.Controllers
                 value.password = Encrypt.Hash(value.password.Trim());
                 this._context.Users.Add(value);
                 this._context.SaveChanges();
-
-                /*
-                // duplicar este usuario en jira
-                Jira jiraUser = new Jira();
-                jiraUser.username = value.username;
-                jiraUser.password = value.password;
-                jiraUser.user_id = value.id;
-                jiraUser.id = jiraUser.user_id;
-                */
 
                 return value;
             }

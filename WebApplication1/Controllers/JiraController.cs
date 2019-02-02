@@ -19,6 +19,9 @@ namespace ApiGTT.Controllers
         public JiraController(AppDbContext context)
         {
             this._context = context;
+
+            // comentamos la creacion de este usuario porque de momento no nos interesa
+            /*
             if (this._context.Jira.Count() == 0)
             {
                 Console.WriteLine("No existen usuarios de jira.");
@@ -29,6 +32,7 @@ namespace ApiGTT.Controllers
                 this._context.Jira.Add(jiraUser);
                 this._context.SaveChanges();
             }
+            */
         }
 
         // GET: api/jira
@@ -65,7 +69,7 @@ namespace ApiGTT.Controllers
 
             if (nameRepeat == null)
             {
-                value.id = value.user_id;
+                value.user_id = value.user_id;
                 value.username = value.username.Trim();
                 value.password = Encrypt.Hash(value.password.Trim());
                 this._context.Jira.Add(value);

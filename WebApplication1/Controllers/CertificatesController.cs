@@ -19,10 +19,7 @@ namespace ApiGTT.Controllers
         public CertificatesController(AppDbContext context)
         {
             this._context = context;
-            Users userPrueba = this._context.Users.FirstOrDefault();
-
-            // certificates.user_id.id = userPrueba.id;
-
+ 
             if (this._context.Certificates.Count() == 0)
             {
                 Console.WriteLine("No existen Certificados.");
