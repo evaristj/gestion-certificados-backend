@@ -83,11 +83,12 @@ namespace ApiGTT.Controllers
         public void Put(long id, [FromBody] Jira value)
         {
             Jira jira = this._context.Jira.Find(id);
-            jira.username = value.username.Trim();
-            jira.password = Encrypt.Hash(value.password.Trim());
-            jira.url = value.url.Trim();
-            jira.project = value.project.Trim();
-            jira.component = value.component.Trim();
+            jira.user_id = value.user_id;
+            jira.username = value.username;
+            jira.password = Encrypt.Hash(value.password);
+            jira.url = value.url;
+            jira.project = value.project;
+            jira.component = value.component;
             this._context.SaveChanges();
         }
 
