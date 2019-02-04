@@ -36,8 +36,6 @@ namespace ApiGTT.Controllers
                 certificates.repositorio_url = "asd";
                 certificates.subject = "asd";
                 certificates.caducidad = new DateTime();
-                //certificates.user_id.id = 3;
-                // usuario.password = "12345";
                 this._context.Certificates.Add(certificates);
                 this._context.SaveChanges();
             }
@@ -63,8 +61,68 @@ namespace ApiGTT.Controllers
 
         // POST: api/Certificates
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<Certificates> Post([FromBody] Certificates value)
         {
+
+            Certificates certificatesRepeat = new Certificates();
+
+            try
+            {
+                if (value.alias.Trim().Length < 4 || value.alias.Trim() == null
+                    || value.id_orga.Trim().Length < 4 || value.id_orga.Trim() == null
+                    || value.nombre_cliente.Trim().Length < 4 || value.nombre_cliente.Trim() == null
+                    || value.contacto_renovacion.Trim().Length < 4 || value.contacto_renovacion.Trim() == null)
+                {
+                    return StatusCode(411);
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("error en la longitud de los campos del usuario.");
+                return Unauthorized();           
+            }
+
+            try
+            {
+                certificatesRepeat = _context.Certificates.Where(
+                    cert => cert.num_serie.Trim() == value.num_serie.Trim()).FirstOrDefault();
+                if (certificatesRepeat != null)
+                    return StatusCode(409);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("error el comprobar el usuario en la base de datos.");
+                return Unauthorized();
+            }
+
+            try
+            {
+                if (certificatesRepeat == null)
+                {
+                    value.alias = value.alias;
+                    value.contacto_renovacion = value.contacto_renovacion.Trim();
+                    value.entidad_emisora = value.entidad_emisora.Trim();
+                    value.id_orga = value.id_orga;
+                    value.integration_list = value.integration_list.Trim();
+                    value.nombre_cliente = value.nombre_cliente.Trim();
+                    value.num_serie = value.num_serie;
+                    value.password = Encrypt.Hash(value.password.Trim());
+                    value.observaciones = value.observaciones.Trim();
+                    value.repositorio_url = value.repositorio_url.Trim();
+                    value.subject = value.subject.Trim();
+                    value.caducidad = DateTime.UtcNow;
+                    this._context.Certificates.Add(value);
+                    this._context.SaveChanges();
+                }
+                return value;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("error al crear el usuario.");
+            }
+
+            return StatusCode(409);
+
         }
 
         // PUT: api/Certificates/5
