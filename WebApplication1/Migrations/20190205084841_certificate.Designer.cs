@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ApiGTT.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190201105156_claveAjenaFuera")]
-    partial class claveAjenaFuera
+    [Migration("20190205084841_certificate")]
+    partial class certificate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,7 +30,11 @@ namespace ApiGTT.Migrations
 
                     b.Property<DateTime>("caducidad");
 
+                    b.Property<string>("cifrado");
+
                     b.Property<string>("contacto_renovacion");
+
+                    b.Property<bool>("eliminado");
 
                     b.Property<string>("entidad_emisora");
 

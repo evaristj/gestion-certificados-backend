@@ -78,7 +78,7 @@ namespace ApiGTT.Controllers
             }
             catch (Exception)
             {
-                Console.WriteLine("error en la longitud de los campos del usuario.");
+                Console.WriteLine("error en la longitud de los campos del certificado.");
                 return Unauthorized();           
             }
 
@@ -91,7 +91,7 @@ namespace ApiGTT.Controllers
             }
             catch (Exception)
             {
-                Console.WriteLine("error el comprobar el usuario en la base de datos.");
+                Console.WriteLine("error el comprobar el certificado en la base de datos.");
                 return Unauthorized();
             }
 
@@ -118,7 +118,7 @@ namespace ApiGTT.Controllers
             }
             catch (Exception)
             {
-                Console.WriteLine("error al crear el usuario.");
+                Console.WriteLine("error al crear el certificado.");
             }
 
             return StatusCode(409);

@@ -21,6 +21,8 @@ namespace ApiGTT.Models
         public string repositorio_url { get; set; }
         public string observaciones { get; set; }
         public string integration_list { get; set; }
+        public Boolean eliminado { get; set; }
+        public string cifrado { get; set; }
 
     }
 }

@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ApiGTT.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190128152436_Add-foreignKey-tables")]
-    partial class AddforeignKeytables
+    [Migration("20190205084733_certificate_nuevos_campos")]
+    partial class certificate_nuevos_campos
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,7 +30,11 @@ namespace ApiGTT.Migrations
 
                     b.Property<DateTime>("caducidad");
 
+                    b.Property<string>("cifrado");
+
                     b.Property<string>("contacto_renovacion");
+
+                    b.Property<bool>("eliminado");
 
                     b.Property<string>("entidad_emisora");
 
@@ -50,11 +54,9 @@ namespace ApiGTT.Migrations
 
                     b.Property<string>("subject");
 
-                    b.Property<long?>("user_idid");
+                    b.Property<long>("user_id");
 
                     b.HasKey("id");
-
-                    b.HasIndex("user_idid");
 
                     b.ToTable("Certificates");
                 });
@@ -72,13 +74,11 @@ namespace ApiGTT.Migrations
 
                     b.Property<string>("url");
 
-                    b.Property<long?>("user_idid");
+                    b.Property<long>("user_id");
 
                     b.Property<string>("username");
 
                     b.HasKey("id");
-
-                    b.HasIndex("user_idid");
 
                     b.ToTable("Jira");
                 });
@@ -99,20 +99,6 @@ namespace ApiGTT.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ApiGTT.Models.Certificates", b =>
-                {
-                    b.HasOne("ApiGTT.Models.Users", "user_id")
-                        .WithMany()
-                        .HasForeignKey("user_idid");
-                });
-
-            modelBuilder.Entity("ApiGTT.Models.Jira", b =>
-                {
-                    b.HasOne("ApiGTT.Models.Users", "user_id")
-                        .WithMany()
-                        .HasForeignKey("user_idid");
                 });
 #pragma warning restore 612, 618
         }

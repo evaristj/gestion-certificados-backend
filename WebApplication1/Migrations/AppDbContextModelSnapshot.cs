@@ -28,7 +28,11 @@ namespace ApiGTT.Migrations
 
                     b.Property<DateTime>("caducidad");
 
+                    b.Property<string>("cifrado");
+
                     b.Property<string>("contacto_renovacion");
+
+                    b.Property<bool>("eliminado");
 
                     b.Property<string>("entidad_emisora");
 
