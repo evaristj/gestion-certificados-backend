@@ -18,7 +18,7 @@ namespace ApiGTT.Controllers
 
         public CertificatesController(AppDbContext context)
         {
-            this._context = context;
+            _context = context;
  
             if (this._context.Certificates.Count() == 0)
             {
@@ -46,18 +46,24 @@ namespace ApiGTT.Controllers
         [HttpGet]
         public ActionResult<List<Certificates>> GetAll()
         {
-            return _context.Certificates.ToList();
+            return this._context.Certificates.ToList();
         }
         
 
-            /*
+        
         // GET: api/Certificates/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("{id}")]
+        public ActionResult<Certificates> Get(long id)
         {
-            return "value";
+            Certificates cert = this._context.Certificates.Find(id);
+
+            if (cert == null)
+            {
+                return NotFound();
+            }
+            return cert;
         }
-        */
+        
 
         // POST: api/Certificates
         [HttpPost]
@@ -84,7 +90,7 @@ namespace ApiGTT.Controllers
 
             try
             {
-                certificatesRepeat = _context.Certificates.Where(
+                certificatesRepeat = this._context.Certificates.Where(
                     cert => cert.num_serie.Trim() == value.num_serie.Trim()).FirstOrDefault();
                 if (certificatesRepeat != null)
                     return StatusCode(409);
@@ -111,6 +117,8 @@ namespace ApiGTT.Controllers
                     value.repositorio_url = value.repositorio_url.Trim();
                     value.subject = value.subject.Trim();
                     value.caducidad = DateTime.UtcNow;
+                    value.eliminado = value.eliminado;
+                    value.cifrado = value.cifrado;
                     this._context.Certificates.Add(value);
                     this._context.SaveChanges();
                 }
@@ -127,13 +135,18 @@ namespace ApiGTT.Controllers
 
         // PUT: api/Certificates/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult<Certificates> Put(long id, [FromBody] Certificates value)
         {
+            Certificates cert = this._context.Certificates.Find(id);
+            cert.eliminado = value.eliminado;
+            this._context.SaveChanges();
+
+            return cert;
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(long id)
         {
         }
     }

@@ -46,7 +46,7 @@ namespace ApiGTT.Controllers
         [HttpGet("{id}", Name = "Get")]
         public ActionResult<Jira> Get(long id)
         {
-            Jira jira = _context.Jira.Find(id);
+            Jira jira = this._context.Jira.Find(id);
             if (jira == null)
             {
                 return NotFound();
