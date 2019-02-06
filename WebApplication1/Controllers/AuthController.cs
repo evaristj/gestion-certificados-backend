@@ -39,11 +39,20 @@ namespace ApiGTT.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] Users value)
         {
-            if (value.username.Trim().Length < 4 || value.username == null 
-                || value.password.Trim().Length < 4 || value.password == null)
+            try
             {
-                return StatusCode(411);
+                if (value.username.Trim().Length < 4 || value.username == null 
+                    || value.password.Trim().Length < 4 || value.password == null)
+                {
+                    return StatusCode(411);
+                }
             }
+            catch (Exception)
+            {
+
+                return StatusCode(500);
+            }
+           
 
             try {
                 Users userNameLogin = this._context.Users.Where(
