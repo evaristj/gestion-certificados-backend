@@ -18,19 +18,19 @@ namespace ApiGTT.Controllers
         public UsersController(AppDbContext context)
         {
             this._context = context;
-            /*
+            
             if (this._context.Users.Count() == 0)
             {
                 Console.WriteLine("No existen usuarios.");
                 Users usuario = new Users();
                 usuario.username = "Evarist";
                 usuario.password = Encrypt.Hash("12345");
-                // usuario.role = Role.admin;
+                usuario.role = Role.admin;
 
                 this._context.Users.Add(usuario);
                 this._context.SaveChanges();
             }
-            */
+            
             /*
             Users usuario2 = new Users();
             usuario2.username = "pepepa";

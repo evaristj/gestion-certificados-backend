@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ApiGTT.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190205084733_certificate_nuevos_campos")]
-    partial class certificate_nuevos_campos
+    [Migration("20190207085705_Initial_created")]
+    partial class Initial_created
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

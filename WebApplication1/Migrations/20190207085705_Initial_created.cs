@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ApiGTT.Migrations
 {
-    public partial class certificate_nuevos_campos : Migration
+    public partial class Initial_created : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

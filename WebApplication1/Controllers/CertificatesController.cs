@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using ApiGTT.Helpers;
 using ApiGTT.Models;
@@ -20,6 +21,7 @@ namespace ApiGTT.Controllers
         {
             _context = context;
  
+            /*
             if (this._context.Certificates.Count() == 0)
             {
                 Console.WriteLine("No existen Certificados.");
@@ -39,6 +41,7 @@ namespace ApiGTT.Controllers
                 this._context.Certificates.Add(certificates);
                 this._context.SaveChanges();
             }
+            */
            
         }
 
@@ -67,11 +70,28 @@ namespace ApiGTT.Controllers
 
         // POST: api/Certificates
         [HttpPost]
-        public ActionResult<Certificates> Post([FromBody] Certificates value)
+        public ActionResult<X509Certificate2> Post([FromBody] Certificates value)
         {
 
             Certificates certificatesRepeat = new Certificates();
 
+            
+            byte[] arrCifrado = Convert.FromBase64String(value.cifrado);
+            value.password = value.password;
+
+            X509Certificate2 certificate2 = new X509Certificate2(arrCifrado, value.password);
+
+            //value.caducidad = certificate2.NotAfter.ToShortDateString();
+            value.num_serie = certificate2.GetSerialNumberString();
+            value.subject = certificate2.Subject;
+            value.entidad_emisora = certificate2.Issuer;
+
+            this._context.Certificates.Add(value);
+            this._context.SaveChanges();
+
+            return certificate2;
+           
+            /*
             try
             {
                 if (value.alias.Trim().Length < 4 || value.alias.Trim() == null
@@ -130,7 +150,7 @@ namespace ApiGTT.Controllers
             }
 
             return StatusCode(409);
-
+            */
         }
 
         // PUT: api/Certificates/5
