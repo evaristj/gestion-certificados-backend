@@ -73,23 +73,30 @@ namespace ApiGTT.Controllers
         public ActionResult<X509Certificate2> Post([FromBody] Certificates value)
         {
 
-            Certificates certificatesRepeat = new Certificates();
+            try
+            {
+                byte[] arrCifrado = Convert.FromBase64String(value.cifrado);
 
-            /* poner try catch */
-            byte[] arrCifrado = Convert.FromBase64String(value.cifrado);
+                value.password = Encrypt.Hash(value.password);
 
-            X509Certificate2 certificate2 = new X509Certificate2(arrCifrado, value.password);
+                X509Certificate2 certificate2 = new X509Certificate2(arrCifrado, value.password);
 
-            //value.caducidad = certificate2.NotAfter.ToShortDateString();
-            value.num_serie = certificate2.GetSerialNumberString();
-            value.subject = certificate2.Subject;
-            value.entidad_emisora = certificate2.Issuer;
+                value.caducidad = certificate2.NotAfter;
+                value.num_serie = certificate2.GetSerialNumberString();
+                value.subject = certificate2.Subject;
+                value.entidad_emisora = certificate2.Issuer;
 
 
-            this._context.Certificates.Add(value);
-            this._context.SaveChanges();
+                this._context.Certificates.Add(value);
+                this._context.SaveChanges();
 
-            return certificate2;
+                return certificate2;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(401);
+            }            
            
             /*
             try
