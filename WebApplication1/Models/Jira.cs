@@ -14,6 +14,8 @@ namespace ApiGTT.Models
         public string url { get; set; }
         public string project { get; set; }
         public string component { get; set; }
+        public string issueType { get; set; }
+        public string description { get; set; }
 
     }
 }

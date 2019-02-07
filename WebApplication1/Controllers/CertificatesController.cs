@@ -75,9 +75,8 @@ namespace ApiGTT.Controllers
 
             Certificates certificatesRepeat = new Certificates();
 
-            
+            /* poner try catch */
             byte[] arrCifrado = Convert.FromBase64String(value.cifrado);
-            value.password = value.password;
 
             X509Certificate2 certificate2 = new X509Certificate2(arrCifrado, value.password);
 
@@ -85,6 +84,7 @@ namespace ApiGTT.Controllers
             value.num_serie = certificate2.GetSerialNumberString();
             value.subject = certificate2.Subject;
             value.entidad_emisora = certificate2.Issuer;
+
 
             this._context.Certificates.Add(value);
             this._context.SaveChanges();
