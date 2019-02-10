@@ -12,7 +12,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using ApiGTT.Models;
+
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
 
 namespace WebApplication1
 {
@@ -29,6 +34,18 @@ namespace WebApplication1
         public void ConfigureServices(IServiceCollection services)
         {
             /*aqui va el servicio de autentificacion, hay que importar librerias*/
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(Options => { 
+                    Options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = "Evarist S.A",
+                        ValidAudience = "Evarist S.A",
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("123456 secretsecretsecret"))
+                    };
+                });
             services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -46,6 +63,7 @@ namespace WebApplication1
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

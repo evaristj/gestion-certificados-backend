@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ApiGTT.Models;
 using ApiGTT.Helpers;
+using Microsoft.AspNetCore.Authorization;
 /*
- * Author Evarist J.
- */
+* Author Evarist J.
+*/
 
 namespace ApiGTT.Controllers
 {
@@ -33,15 +34,7 @@ namespace ApiGTT.Controllers
                 this._context.Users.Add(usuario);
                 this._context.SaveChanges();
             }
-            
-            /*
-            Users usuario2 = new Users();
-            usuario2.username = "pepepa";
-            usuario2.password = Encrypt.Hash("123123");
-
-            this._context.Users.Add(usuario2);
-            this._context.SaveChanges();
-            */
+           
         }
 
         // GET: api/users
@@ -64,6 +57,7 @@ namespace ApiGTT.Controllers
         }
 
         // POST: api/Users crear usuarios
+        [Authorize]
         [HttpPost]
         public ActionResult<Users> Post([FromBody] Users value)
         {
