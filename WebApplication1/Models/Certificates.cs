@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+/*
+ * Author Evarist J.
+ */
 
 namespace ApiGTT.Models
 {
     public class Certificates
     {
         public long id { get; set; }
-        public Users user_id { get; set; }
         public string alias { get; set; }
         public string entidad_emisora { get; set; }
         public string num_serie { get; set; }
@@ -21,6 +23,8 @@ namespace ApiGTT.Models
         public string repositorio_url { get; set; }
         public string observaciones { get; set; }
         public string integration_list { get; set; }
+        public Boolean eliminado { get; set; }
+        public string cifrado { get; set; }
 
     }
 }

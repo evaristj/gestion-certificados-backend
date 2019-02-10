@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ApiGTT.Models;
 using ApiGTT.Helpers;
+/*
+ * Author Evarist J.
+ */
 
 namespace ApiGTT.Controllers
 {
@@ -19,16 +22,20 @@ namespace ApiGTT.Controllers
         public JiraController(AppDbContext context)
         {
             this._context = context;
+
+            // comentamos la creacion de este usuario porque de momento no nos interesa
+            /*
             if (this._context.Jira.Count() == 0)
             {
                 Console.WriteLine("No existen usuarios de jira.");
                 Jira jiraUser = new Jira();
                 jiraUser.username = "pakita";
-                jiraUser.password = "12345";
+                jiraUser.password = Encrypt.Hash("12345");
 
                 this._context.Jira.Add(jiraUser);
                 this._context.SaveChanges();
             }
+            */
         }
 
         // GET: api/jira
@@ -42,7 +49,7 @@ namespace ApiGTT.Controllers
         [HttpGet("{id}", Name = "Get")]
         public ActionResult<Jira> Get(long id)
         {
-            Jira jira = _context.Jira.Find(id);
+            Jira jira = this._context.Jira.Find(id);
             if (jira == null)
             {
                 return NotFound();
@@ -50,16 +57,24 @@ namespace ApiGTT.Controllers
             return jira;
         }
 
-        // POST: api/Jira
+        // POST: api/Jira - crear usuario jira
         [HttpPost]
         public ActionResult<Jira> Post([FromBody] Jira value)
         {
+            if (value.username.Trim().Length < 4 || value.password.Trim().Length < 4
+                || value.password.Trim() == null || value.username.Trim() == null)
+            {
+                return StatusCode(411);
+            }
+
             Jira nameRepeat = _context.Jira.Where(
-                jira => jira.username == value.username).FirstOrDefault();
+                jira => jira.username.Trim() == value.username.Trim()).FirstOrDefault();
 
             if (nameRepeat == null)
             {
-                value.password = Encrypt.Hash(value.password);
+                value.user_id = value.user_id;
+                value.username = value.username.Trim();
+                value.password = Encrypt.Hash(value.password.Trim());
                 this._context.Jira.Add(value);
                 this._context.SaveChanges();
 
@@ -75,8 +90,12 @@ namespace ApiGTT.Controllers
         public void Put(long id, [FromBody] Jira value)
         {
             Jira jira = this._context.Jira.Find(id);
+            jira.user_id = value.user_id;
             jira.username = value.username;
             jira.password = Encrypt.Hash(value.password);
+            jira.url = value.url;
+            jira.project = value.project;
+            jira.component = value.component;
             this._context.SaveChanges();
         }
 

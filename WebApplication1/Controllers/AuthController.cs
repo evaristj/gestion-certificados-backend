@@ -7,8 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using ApiGTT.Models;
 using ApiGTT.Helpers;
 
+using System.IdentityModel.Tokens.Jwt;
+/*
+ * Author Evarist J.
+ */
+
 namespace ApiGTT.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -26,26 +32,37 @@ namespace ApiGTT.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        /*
-        // GET: api/Auth/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-        */
-
         // POST: api/auth
         [HttpPost]
         public ActionResult Post([FromBody] Users value)
         {
+            try
+            {
+                if (value.username.Trim().Length < 4 || value.username == null 
+                    || value.password.Trim().Length < 4 || value.password == null)
+                {
+                    return StatusCode(411);
+                }
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(500);
+            }
+           
+
             try {
                 Users userNameLogin = this._context.Users.Where(
-                user => user.username == value.username).First();
-                Console.WriteLine(value.username + "***************");
-                if (userNameLogin.password == Encrypt.Hash(value.password) && userNameLogin.username == value.username)
+                user => user.username.Trim() == value.username.Trim()).First();
+
+                if (userNameLogin.password.Trim() == Encrypt.Hash(value.password.Trim()) 
+                    && userNameLogin.username.Trim() == value.username.Trim())
                 {
-                    return Ok(userNameLogin);
+                    JwtSecurityToken token = Jwtoken.BuildToken(userNameLogin);
+                    var handlerToken = new JwtSecurityTokenHandler().WriteToken(token);
+                    var sendToken = new { handlerToken, userNameLogin.id, userNameLogin.role, userNameLogin.username };
+
+                    return Ok(sendToken);
                 }
 
             }
@@ -54,7 +71,6 @@ namespace ApiGTT.Controllers
                 Console.WriteLine("Error  => " + ex.Message);
                 return NotFound();
             }
-            Console.WriteLine("usuario o contraseña incorrectas ***********************");
 
             return Unauthorized();
             
@@ -71,5 +87,6 @@ namespace ApiGTT.Controllers
         public void Delete(int id)
         {
         }
+
     }
 }

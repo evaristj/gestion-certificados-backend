@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Text;
+/*
+ * Author Evarist J.
+ */
 
 namespace ApiGTT.Helpers
 {

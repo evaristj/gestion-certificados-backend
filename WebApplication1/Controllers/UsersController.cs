@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ApiGTT.Models;
 using ApiGTT.Helpers;
+using Microsoft.AspNetCore.Authorization;
+/*
+* Author Evarist J.
+*/
 
 namespace ApiGTT.Controllers
 {
@@ -18,25 +22,19 @@ namespace ApiGTT.Controllers
         public UsersController(AppDbContext context)
         {
             this._context = context;
+            
             if (this._context.Users.Count() == 0)
             {
                 Console.WriteLine("No existen usuarios.");
                 Users usuario = new Users();
                 usuario.username = "Evarist";
                 usuario.password = Encrypt.Hash("12345");
-                // usuario.role = Role.admin;
+                usuario.role = Role.admin;
 
                 this._context.Users.Add(usuario);
                 this._context.SaveChanges();
             }
-            /*
-            Users usuario2 = new Users();
-            usuario2.username = "pepepa";
-            usuario2.password = Encrypt.Hash("123123");
-
-            this._context.Users.Add(usuario2);
-            this._context.SaveChanges();
-            */
+           
         }
 
         // GET: api/users
@@ -59,15 +57,23 @@ namespace ApiGTT.Controllers
         }
 
         // POST: api/Users crear usuarios
+        [Authorize]
         [HttpPost]
         public ActionResult<Users> Post([FromBody] Users value)
         {
+            if(value.username.Trim().Length < 4 || value.password.Trim().Length < 4 
+                || value.password.Trim() == null || value.username.Trim() == null)
+            {
+                return StatusCode(411);
+            }
+
             Users nameRepeat = _context.Users.Where(
-                user => user.username == value.username).FirstOrDefault();
+                user => user.username.Trim() == value.username.Trim()).FirstOrDefault();
            
             if(nameRepeat == null)
             {
-                value.password = Encrypt.Hash(value.password);
+                value.username = value.username.Trim();
+                value.password = Encrypt.Hash(value.password.Trim());
                 this._context.Users.Add(value);
                 this._context.SaveChanges();
 
