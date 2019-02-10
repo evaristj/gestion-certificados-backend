@@ -7,10 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using ApiGTT.Models;
 using ApiGTT.Helpers;
 
-using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace ApiGTT.Controllers
 {
@@ -58,7 +55,7 @@ namespace ApiGTT.Controllers
                 if (userNameLogin.password.Trim() == Encrypt.Hash(value.password.Trim()) 
                     && userNameLogin.username.Trim() == value.username.Trim())
                 {
-                    JwtSecurityToken token = BuildToken(userNameLogin);
+                    JwtSecurityToken token = Jwtoken.BuildToken(userNameLogin);
                     var handlerToken = new JwtSecurityTokenHandler().WriteToken(token);
                     var sendToken = new { handlerToken, userNameLogin.id, userNameLogin.role, userNameLogin.username };
 
@@ -88,23 +85,5 @@ namespace ApiGTT.Controllers
         {
         }
 
-        public JwtSecurityToken BuildToken(Users data)
-        {
-            var claims = new[]{
-              new Claim("userName", data.username),
-              new Claim("id", data.id.ToString()),
-              new Claim("role", data.role.ToString())
-          };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("123456 secretsecretsecret"));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: "Evarist S.A",
-                audience: "Evarist S.A",
-                claims: claims,
-                expires: DateTime.Now.AddDays(15),
-                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
-            return token;
-        }
     }
 }
