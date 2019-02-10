@@ -8,6 +8,9 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ApiGTT.Models;
+/*
+ * Author Evarist J.
+ */
 
 namespace ApiGTT.Helpers
 {

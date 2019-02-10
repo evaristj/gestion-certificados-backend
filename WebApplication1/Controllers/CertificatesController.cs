@@ -7,6 +7,9 @@ using ApiGTT.Helpers;
 using ApiGTT.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+/*
+ * Author Evarist J.
+ */
 
 namespace ApiGTT.Controllers
 {
