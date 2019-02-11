@@ -17,12 +17,19 @@ namespace ApiGTT.Helpers
     public class Jwtoken
     {
 
+        private readonly AppDbContext _context;
+
+        public Jwtoken(AppDbContext context)
+        {
+            this._context = context;
+        }
+
         public static JwtSecurityToken BuildToken(Users data)
         {
             var claims = new[]{
-              new Claim("userName", data.username),
-              new Claim("id", data.id.ToString()),
-              new Claim("role", data.role.ToString())
+              new Claim(ClaimTypes.Name, data.username),
+              new Claim(ClaimTypes.NameIdentifier, data.id.ToString()),
+              new Claim(ClaimTypes.Role, data.role.ToString())
           };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("123456 secretsecretsecret"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

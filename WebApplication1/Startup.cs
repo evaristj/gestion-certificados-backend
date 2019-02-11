@@ -18,6 +18,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
+using ApiGTT.Services;
 
 namespace WebApplication1
 {
@@ -49,6 +50,7 @@ namespace WebApplication1
             services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddHostedService<ServiceCron>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

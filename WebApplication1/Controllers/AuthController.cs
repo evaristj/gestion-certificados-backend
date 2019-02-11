@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ApiGTT.Models;
 using ApiGTT.Helpers;
+using System.Security.Claims;
 
 using System.IdentityModel.Tokens.Jwt;
 /*
@@ -60,7 +61,16 @@ namespace ApiGTT.Controllers
                 {
                     JwtSecurityToken token = Jwtoken.BuildToken(userNameLogin);
                     var handlerToken = new JwtSecurityTokenHandler().WriteToken(token);
+                    // enviar la info dentro del token
+                    /*
+                    var claimsIdentity = this.User.Identity as ClaimsIdentity;
+                    var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                    Console.WriteLine(userId, " claimsidentity ****************************************");
+                    */
+
                     var sendToken = new { handlerToken, userNameLogin.id, userNameLogin.role, userNameLogin.username };
+
+                    
 
                     return Ok(sendToken);
                 }

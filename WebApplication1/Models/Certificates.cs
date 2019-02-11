@@ -25,6 +25,7 @@ namespace ApiGTT.Models
         public string integration_list { get; set; }
         public Boolean eliminado { get; set; }
         public string cifrado { get; set; }
+        public string nombre_archivo { get; set; }
 
     }
 }
