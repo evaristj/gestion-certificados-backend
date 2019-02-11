@@ -60,20 +60,29 @@ namespace ApiGTT.Controllers
             {
                 byte[] arrCifrado = Convert.FromBase64String(value.cifrado);
 
-                value.password = Encrypt.Hash(value.password);
-
                 X509Certificate2 certificate2 = new X509Certificate2(arrCifrado, value.password);
 
-                value.caducidad = certificate2.NotAfter;
-                value.num_serie = certificate2.GetSerialNumberString();
-                value.subject = certificate2.Subject;
-                value.entidad_emisora = certificate2.Issuer;
+                Certificates certRepeat = _context.Certificates.Where(
+                    cert => cert.num_serie.Trim() == certificate2.GetSerialNumberString()).FirstOrDefault();
+
+                if (certRepeat == null)
+                {
+                    value.password = Encrypt.Hash(value.password);
+                    value.caducidad = certificate2.NotAfter;
+                    value.num_serie = certificate2.GetSerialNumberString();
+                    value.subject = certificate2.Subject;
+                    value.entidad_emisora = certificate2.Issuer;
+
+                    this._context.Certificates.Add(value);
+                    this._context.SaveChanges();
+
+                    return certificate2;
+                }
+                return StatusCode(409);
+                
 
 
-                this._context.Certificates.Add(value);
-                this._context.SaveChanges();
-
-                return certificate2;
+                
             }
             catch (Exception ex)
             {
