@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApiGTT.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CertificatesController : ControllerBase
@@ -49,9 +48,10 @@ namespace ApiGTT.Controllers
             }
             return cert;
         }
-        
+
 
         // POST: api/Certificates
+        [Authorize]
         [HttpPost]
         public ActionResult<X509Certificate2> Post([FromBody] Certificates value)
         {
@@ -84,6 +84,7 @@ namespace ApiGTT.Controllers
         }
 
         // PUT: api/Certificates/5
+        [Authorize]
         [HttpPut("{id}")]
         public ActionResult<Certificates> Put(long id, [FromBody] Certificates value)
         {
@@ -95,6 +96,7 @@ namespace ApiGTT.Controllers
         }
 
         // DELETE: api/ApiWithActions/5
+        [Authorize]
         [HttpDelete("{id}")]
         public void Delete(long id)
         {
