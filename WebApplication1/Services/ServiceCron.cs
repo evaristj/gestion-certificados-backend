@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using ApiGTT.Models;
 
 namespace ApiGTT.Services
 {
@@ -29,13 +31,13 @@ namespace ApiGTT.Services
 
         public void DoWork(object state)
         {
-            /*
-            var optionsBuild = new DbContextOptionsBuilder<AppDBContext>();
+            
+            var optionsBuild = new DbContextOptionsBuilder<AppDbContext>();
 
-            optionsBuild.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=example;Database=ApiGtt;");
+            optionsBuild.UseNpgsql("Host=192.168.99.100; Port=5432; Username=postgres; Password=example; Database=ApiGTT;");
 
 
-            using (var context = new AppDBContext(optionsBuild.Options))
+            using (var context = new AppDbContext(optionsBuild.Options))
             {
                 long Id = 1;
                 context.Users.Load();
@@ -45,7 +47,7 @@ namespace ApiGTT.Services
                 }
 
             }
-            */
+            
 
             _logger.LogInformation("Ejecutando tarea.");
 
