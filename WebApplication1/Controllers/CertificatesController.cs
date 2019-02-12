@@ -97,11 +97,27 @@ namespace ApiGTT.Controllers
         [HttpPut("{id}")]
         public ActionResult<Certificates> Put(long id, [FromBody] Certificates value)
         {
-            Certificates cert = this._context.Certificates.Find(id);
-            cert.eliminado = value.eliminado;
-            this._context.SaveChanges();
+            try
+            {
+                Certificates cert = this._context.Certificates.Find(id);
+                cert.alias = value.alias;
+                cert.contacto_renovacion = value.contacto_renovacion;
+                cert.id_orga = value.id_orga;
+                cert.nombre_cliente = cert.id_orga;
+                cert.nombre_archivo = value.nombre_archivo;
+                cert.integration_list = value.integration_list;
+                cert.observaciones = value.observaciones;
+                cert.repositorio_url = value.repositorio_url;
+                cert.eliminado = value.eliminado;
+                this._context.SaveChanges();
 
-            return cert;
+                return cert;
+            }
+            catch (Exception)
+            {
+                return Unauthorized();
+            }
+            
         }
 
         // DELETE: api/ApiWithActions/5

@@ -29,6 +29,24 @@ namespace ApiGTT.Services
 
         public void DoWork(object state)
         {
+            /*
+            var optionsBuild = new DbContextOptionsBuilder<AppDBContext>();
+
+            optionsBuild.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=example;Database=ApiGtt;");
+
+
+            using (var context = new AppDBContext(optionsBuild.Options))
+            {
+                long Id = 1;
+                context.Users.Load();
+                foreach (var user in context.Users.Local)
+                {
+                    Console.WriteLine(user.username);
+                }
+
+            }
+            */
+
             _logger.LogInformation("Ejecutando tarea.");
 
 
