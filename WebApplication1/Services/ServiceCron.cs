@@ -23,7 +23,7 @@ namespace ApiGTT.Services
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Arrancando el servicio");
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(15));
             return Task.CompletedTask;
 
            // throw new NotImplementedException();
@@ -39,11 +39,25 @@ namespace ApiGTT.Services
 
             using (var context = new AppDbContext(optionsBuild.Options))
             {
-                long Id = 1;
-                context.Users.Load();
-                foreach (var user in context.Users.Local)
+                DateTime maxDateTime = DateTime.Now.AddMonths(1);
+                DateTime nowDate = DateTime.Now;
+                context.Certificates.Load();
+                foreach (var cert in context.Certificates.Local)
                 {
-                    Console.WriteLine(user.username);
+                    var caducados = cert.caducidad;
+                    if (caducados > maxDateTime)
+                    {
+                        Console.WriteLine("más de 1 mes para caducar");
+                        cert.proxCaducidad = true;
+                        context.SaveChanges();
+                        Console.WriteLine(cert.proxCaducidad);
+                    } else if(caducados < nowDate)
+                    {
+                        Console.WriteLine("Caducados.");
+                        cert.caducado = true;
+                        context.SaveChanges();
+                    }
+
                 }
 
             }

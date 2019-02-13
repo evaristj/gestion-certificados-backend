@@ -26,6 +26,8 @@ namespace ApiGTT.Models
         public Boolean eliminado { get; set; }
         public string cifrado { get; set; }
         public string nombre_archivo { get; set; }
+        public Boolean caducado { get; set; }
+        public Boolean proxCaducidad { get; set; }
 
     }
 }
