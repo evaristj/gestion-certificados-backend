@@ -49,12 +49,21 @@ namespace ApiGTT.Controllers
         [HttpGet("{id}", Name = "Get")]
         public ActionResult<Jira> Get(long id)
         {
-            Jira jira = this._context.Jira.Where( jiraUser => jiraUser.user_id == id).FirstOrDefault();
-            if (jira == null)
+            try
             {
-                return NotFound();
+                Jira jira = this._context.Jira.Where(jiraUser => jiraUser.user_id == id).FirstOrDefault();
+                if (jira == null)
+                {
+                    return NotFound();
+                }
+                return jira;
             }
-            return jira;
+            catch (Exception)
+            {
+
+                return Unauthorized();
+            }
+           
         }
 
         // POST: api/Jira - crear usuario jira
@@ -102,34 +111,52 @@ namespace ApiGTT.Controllers
         [HttpPut("{id}")]
         public void Put(long id, [FromBody] Jira value)
         {
-            Jira jira = this._context.Jira.Find(id);
-            jira.user_id = value.user_id;
-            jira.username = value.username;
-            jira.password = Encrypt.Hash(value.password);
-            jira.url = value.url;
-            jira.project = value.project;
-            jira.component = value.component;
-            this._context.SaveChanges();
+            try
+            {
+                Jira jira = this._context.Jira.Find(id);
+                jira.user_id = value.user_id;
+                jira.username = value.username;
+                jira.password = Encrypt.Hash(value.password);
+                jira.url = value.url;
+                jira.project = value.project;
+                jira.component = value.component;
+                this._context.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public ActionResult<string> Delete(long id)
         {
-            Jira jiraUserDelete = this._context.Jira.Where(
-                jira => jira.id == id).FirstOrDefault();
-            if (jiraUserDelete == null)
+            try
             {
-                return "usuario no existe";
+                Jira jiraUserDelete = this._context.Jira.Where(
+                jira => jira.id == id).FirstOrDefault();
+                if (jiraUserDelete == null)
+                {
+                    return "usuario no existe";
+                }
+
+                // _context es el contexto de la entidad, de la aplicacion, para nosotros poder acceder
+                // al contexto de la DB en este caso, se pueden añadir más contextos en su respectiva clase
+                // se inyecta, NO se importa
+                this._context.Remove(jiraUserDelete);
+                this._context.SaveChanges();
+
+                return "Se ha borrado: " + jiraUserDelete.id;
             }
+            catch (Exception)
+            {
 
-            // _context es el contexto de la entidad, de la aplicacion, para nosotros poder acceder
-            // al contexto de la DB en este caso, se pueden añadir más contextos en su respectiva clase
-            // se inyecta, NO se importa
-            this._context.Remove(jiraUserDelete);
-            this._context.SaveChanges();
-
-            return "Se ha borrado: " + jiraUserDelete.id;
+                return Unauthorized();
+            }
+            
         }
     }
 }

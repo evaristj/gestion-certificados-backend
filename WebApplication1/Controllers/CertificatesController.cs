@@ -120,11 +120,5 @@ namespace ApiGTT.Controllers
             
         }
 
-        // DELETE: api/ApiWithActions/5
-        [Authorize]
-        [HttpDelete("{id}")]
-        public void Delete(long id)
-        {
-        }
     }
 }

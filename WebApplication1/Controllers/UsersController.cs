@@ -48,12 +48,21 @@ namespace ApiGTT.Controllers
         [HttpGet("{id}")]
         public ActionResult<Users> Get(long id)
         {
-            Users user = this._context.Users.Find(id);
-            if (user == null)
+            try
             {
-                return NotFound();
+                Users user = this._context.Users.Find(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return user;
             }
-            return user;
+            catch (Exception)
+            {
+
+                return Unauthorized();
+            }
+            
         }
 
         // POST: api/Users crear usuarios
@@ -61,26 +70,35 @@ namespace ApiGTT.Controllers
         [HttpPost]
         public ActionResult<Users> Post([FromBody] Users value)
         {
-            if(value.username.Trim().Length < 4 || value.password.Trim().Length < 4 
-                || value.password.Trim() == null || value.username.Trim() == null)
+            try
             {
-                return StatusCode(411);
-            }
+                if (value.username.Trim().Length < 4 || value.password.Trim().Length < 4
+               || value.password.Trim() == null || value.username.Trim() == null)
+                {
+                    return StatusCode(411);
+                }
 
-            Users nameRepeat = _context.Users.Where(
-                user => user.username.Trim() == value.username.Trim()).FirstOrDefault();
+                Users nameRepeat = _context.Users.Where(
+                    user => user.username.Trim() == value.username.Trim()).FirstOrDefault();
+
+                if (nameRepeat == null)
+                {
+                    value.username = value.username.Trim();
+                    value.password = Encrypt.Hash(value.password.Trim());
+                    this._context.Users.Add(value);
+                    this._context.SaveChanges();
+
+                    return value;
+                }
+
+                return StatusCode(409);
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(403);
+            }
            
-            if(nameRepeat == null)
-            {
-                value.username = value.username.Trim();
-                value.password = Encrypt.Hash(value.password.Trim());
-                this._context.Users.Add(value);
-                this._context.SaveChanges();
-
-                return value;
-            }
-
-            return StatusCode(409);
 
         }
 
@@ -88,11 +106,20 @@ namespace ApiGTT.Controllers
         [HttpPut("{id}")]
         public void Put(long id, [FromBody] Users value)
         {
-            Users user = this._context.Users.Find(id);
-            user.username = value.username;
-            user.password = Encrypt.Hash(value.password);
-            user.role = value.role;
-            this._context.SaveChanges();
+            try
+            {
+                Users user = this._context.Users.Find(id);
+                user.username = value.username;
+                user.password = Encrypt.Hash(value.password);
+                user.role = value.role;
+                this._context.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
 
         }
 
@@ -100,20 +127,29 @@ namespace ApiGTT.Controllers
         [HttpDelete("{id}")]
         public ActionResult<string> Delete(long id)
         {
-            Users userDelete = this._context.Users.Where(
-                user => user.id == id).FirstOrDefault();
-            if (userDelete == null)
+            try
             {
-                return "usuario no existe";
+                Users userDelete = this._context.Users.Where(
+                user => user.id == id).FirstOrDefault();
+                if (userDelete == null)
+                {
+                    return "usuario no existe";
+                }
+
+                // _context es el contexto de la entidad, de la aplicacion, para nosotros poder acceder
+                // al contexto de la DB en este caso, se pueden añadir más contextos en su respectiva clase
+                // se inyecta, NO se importa
+                this._context.Remove(userDelete);
+                this._context.SaveChanges();
+
+                return "Se ha borrado: " + userDelete.id;
             }
+            catch (Exception)
+            {
 
-            // _context es el contexto de la entidad, de la aplicacion, para nosotros poder acceder
-            // al contexto de la DB en este caso, se pueden añadir más contextos en su respectiva clase
-            // se inyecta, NO se importa
-            this._context.Remove(userDelete);
-            this._context.SaveChanges();
-
-            return "Se ha borrado: " + userDelete.id;
+                return StatusCode(403);
+            }
+            
 
         }
     }
