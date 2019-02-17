@@ -23,7 +23,7 @@ namespace ApiGTT.Services
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Arrancando el servicio");
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(15));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(15));
             return Task.CompletedTask;
 
            // throw new NotImplementedException();
@@ -45,7 +45,7 @@ namespace ApiGTT.Services
                 foreach (var cert in context.Certificates.Local)
                 {
                     var caducados = cert.caducidad;
-                    if (caducados > maxDateTime)
+                    if (caducados < maxDateTime && !(caducados < nowDate))
                     {
                         Console.WriteLine("más de 1 mes para caducar");
                         cert.proxCaducidad = true;
@@ -55,6 +55,11 @@ namespace ApiGTT.Services
                     {
                         Console.WriteLine("Caducados.");
                         cert.caducado = true;
+                        cert.proxCaducidad = false;
+                        context.SaveChanges();
+                    }else if (caducados > maxDateTime)
+                    {
+                        cert.caducado = false;
                         context.SaveChanges();
                     }
 

@@ -24,18 +24,18 @@ namespace ApiGTT.Controllers
             this._context = context;
 
             // comentamos la creacion de este usuario porque de momento no nos interesa
-            /*
+            
             if (this._context.Jira.Count() == 0)
             {
                 Console.WriteLine("No existen usuarios de jira.");
                 Jira jiraUser = new Jira();
-                jiraUser.username = "pakita";
+                jiraUser.username = "Evarist";
                 jiraUser.password = Encrypt.Hash("12345");
 
                 this._context.Jira.Add(jiraUser);
                 this._context.SaveChanges();
             }
-            */
+            
         }
 
         // GET: api/jira

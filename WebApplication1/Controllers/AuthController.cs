@@ -26,13 +26,6 @@ namespace ApiGTT.Controllers
             this._context = context;
         }
 
-        // GET: api/Auth
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
         // POST: api/auth
         [HttpPost]
         public ActionResult Post([FromBody] Users value)
@@ -61,16 +54,8 @@ namespace ApiGTT.Controllers
                 {
                     JwtSecurityToken token = Jwtoken.BuildToken(userNameLogin);
                     var handlerToken = new JwtSecurityTokenHandler().WriteToken(token);
-                    // enviar la info dentro del token
-                    /*
-                    var claimsIdentity = this.User.Identity as ClaimsIdentity;
-                    var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-                    Console.WriteLine(userId, " claimsidentity ****************************************");
-                    */
 
                     var sendToken = new { handlerToken, userNameLogin.id, userNameLogin.role, userNameLogin.username };
-
-                    
 
                     return Ok(sendToken);
                 }
@@ -84,18 +69,6 @@ namespace ApiGTT.Controllers
 
             return Unauthorized();
             
-        }
-
-        // PUT: api/Auth/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
 
     }
