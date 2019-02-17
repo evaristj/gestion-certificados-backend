@@ -49,7 +49,7 @@ namespace ApiGTT.Controllers
         [HttpGet("{id}", Name = "Get")]
         public ActionResult<Jira> Get(long id)
         {
-            Jira jira = this._context.Jira.Find(id);
+            Jira jira = this._context.Jira.Where( jiraUser => jiraUser.user_id == id).FirstOrDefault();
             if (jira == null)
             {
                 return NotFound();
@@ -61,27 +61,40 @@ namespace ApiGTT.Controllers
         [HttpPost]
         public ActionResult<Jira> Post([FromBody] Jira value)
         {
-            if (value.username.Trim().Length < 4 || value.password.Trim().Length < 4
-                || value.password.Trim() == null || value.username.Trim() == null)
+            try
             {
-                return StatusCode(411);
+                if (value.username.Trim().Length < 4 || value.password.Trim().Length < 4
+                    || value.password.Trim() == null || value.username.Trim() == null)
+                {
+                    return StatusCode(411);
+                }
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(500);
             }
 
-            Jira nameRepeat = _context.Jira.Where(
-                jira => jira.username.Trim() == value.username.Trim()).FirstOrDefault();
 
-            if (nameRepeat == null)
+            try
             {
-                value.user_id = value.user_id;
                 value.username = value.username.Trim();
                 value.password = Encrypt.Hash(value.password.Trim());
-                this._context.Jira.Add(value);
-                this._context.SaveChanges();
+                Console.WriteLine(value.id + " id de usuario ****************************");
+                _context.Jira.Add(value);
+                // da error aqui al crear un usuario
+                _context.SaveChanges();
 
                 return value;
-            }
 
-            return Unauthorized();
+            }
+            catch (Exception)
+            {
+
+                return Unauthorized();
+            }
+               
+            
 
         }
 
