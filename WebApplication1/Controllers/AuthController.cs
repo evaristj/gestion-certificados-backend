@@ -26,7 +26,7 @@ namespace ApiGTT.Controllers
             this._context = context;
         }
 
-        // POST: api/auth
+        // POST: api/auth login
         [HttpPost]
         public ActionResult Post([FromBody] Users value)
         {

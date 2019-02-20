@@ -22,8 +22,6 @@ namespace ApiGTT.Controllers
         public JiraController(AppDbContext context)
         {
             this._context = context;
-
-            // comentamos la creacion de este usuario porque de momento no nos interesa
             
             if (this._context.Jira.Count() == 0)
             {
@@ -89,9 +87,7 @@ namespace ApiGTT.Controllers
             {
                 value.username = value.username.Trim();
                 value.password = Encrypt.Hash(value.password.Trim());
-                Console.WriteLine(value.id + " id de usuario ****************************");
                 _context.Jira.Add(value);
-                // da error aqui al crear un usuario
                 _context.SaveChanges();
 
                 return value;
@@ -142,10 +138,7 @@ namespace ApiGTT.Controllers
                 {
                     return "usuario no existe";
                 }
-
-                // _context es el contexto de la entidad, de la aplicacion, para nosotros poder acceder
-                // al contexto de la DB en este caso, se pueden añadir más contextos en su respectiva clase
-                // se inyecta, NO se importa
+                
                 this._context.Remove(jiraUserDelete);
                 this._context.SaveChanges();
 

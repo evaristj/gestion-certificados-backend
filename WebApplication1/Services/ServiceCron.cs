@@ -42,12 +42,13 @@ namespace ApiGTT.Services
                 DateTime maxDateTime = DateTime.Now.AddMonths(1);
                 DateTime nowDate = DateTime.Now;
                 context.Certificates.Load();
+
                 foreach (var cert in context.Certificates.Local)
                 {
                     var caducados = cert.caducidad;
                     if (caducados < maxDateTime && !(caducados < nowDate))
                     {
-                        Console.WriteLine("más de 1 mes para caducar");
+                        Console.WriteLine("menos de 1 mes para caducar");
                         cert.proxCaducidad = true;
                         context.SaveChanges();
                         Console.WriteLine(cert.proxCaducidad);
@@ -60,16 +61,15 @@ namespace ApiGTT.Services
                     }else if (caducados > maxDateTime)
                     {
                         cert.caducado = false;
+                        cert.proxCaducidad = false;
                         context.SaveChanges();
                     }
 
                 }
 
             }
-            
 
             _logger.LogInformation("Ejecutando tarea.");
-
 
             // throw new NotImplementedException();
         }

@@ -26,6 +26,7 @@ namespace ApiGTT.Helpers
 
         public static JwtSecurityToken BuildToken(Users data)
         {
+            // datos de usuario que queremos que aparezcan en el payload
             var claims = new[]{
               new Claim(ClaimTypes.Name, data.username),
               new Claim(ClaimTypes.NameIdentifier, data.id.ToString()),

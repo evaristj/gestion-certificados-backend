@@ -51,6 +51,7 @@ namespace ApiGTT.Controllers
 
 
         // POST: api/Certificates
+        [Produces("application/json")]
         [Authorize]
         [HttpPost]
         public ActionResult<X509Certificate2> Post([FromBody] Certificates value)
@@ -76,7 +77,7 @@ namespace ApiGTT.Controllers
                     this._context.Certificates.Add(value);
                     this._context.SaveChanges();
 
-                    return certificate2;
+                    return Ok("Guardado con éxito.");
                 }
                 return StatusCode(409);
                 
